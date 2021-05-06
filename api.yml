@@ -1,0 +1,81 @@
+# webrtc信令交换
+# 发送offer（用户 <--> 信令服务器）
+type: offer
+payload: 
+	sender: 发送人id
+	receiver: 接受者id
+  offer: sdp
+
+# 发送answer（用户 <--> 信令服务器）
+type: answer
+payload: 
+	sender: 发送人id
+	receiver: 接受者id
+  answer: sdp
+
+# icecandidate交换（用户 <--> 信令服务器）
+type: candidate
+payload: 
+	sender: 发送人id
+	receiver: 接受者id
+  candidate: candidate
+
+
+
+
+
+# 用户
+# 注册（用户 -> 信令服务器）
+type: register
+payload:
+  sender: 发送人id
+
+# 注销（用户 -> 信令服务器）
+type: logout
+payload:
+  sender: 发送人id
+
+
+
+
+# 会议
+# 创建会议（用户 -> 信令服务器）
+type: createMeeting
+payload:
+  sender: 发送人id
+  roomId: 房间唯一标识
+  maxUsersCount: 房间最大容纳人数
+
+# 加入会议（用户 -> 信令服务器）
+type: joinMeeting
+payload:
+  sender: 发送人id
+  roomId: 房间唯一标识
+# 加入会议回复（信令服务器 -> 用户）
+type: joinMeetingResponse
+payload:
+  users: 房间内已存在的用户
+# 其他人加入会议（信令服务器 -> 用户）
+type: otherJoinMeeting
+payload:
+  newcomer: 新来的id
+
+# 离开会议（用户 -> 信令服务器）
+type: leaveMeeting
+payload:
+  sender: 发送人id
+# 其他人离开会议（信令服务器 -> 用户）
+type: otherLeaveMeeting
+payload:
+  userId: 离开用户的id
+
+
+
+
+
+
+# 其他消息
+# 通知
+type: notice
+payload: 
+  content: 通知内容
