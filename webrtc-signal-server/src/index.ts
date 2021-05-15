@@ -1,20 +1,21 @@
-const https = require("https")
-const fs = require('fs');
-const path = require("path")
-const WebSocket = require("ws")
-const services = require("./services")
+import https from "https"
+import fs from "fs"
+import path from "path"
+import WebSocket from "ws"
+import * as services from "./services"
+import { MessageData, Services } from "./interface"
 
 const wss = new WebSocket.Server({ noServer: true })
 
 wss.on('connection', function connection(ws) {
-  ws.on('message', function incoming(messageData) {
+  ws.on('message', function incoming(data) {
     try {
       // 解析消息
-      messageData = JSON.parse(messageData.toString())
+      let messageData = JSON.parse(data.toString()) as MessageData
+      let type = messageData.type
       try {
-        let type = messageData.type
         // 调用对应的处理函数
-        services[type](messageData, ws)
+        (services as Services)[type](messageData, ws);
       } catch (error) {
         // 发送处理异常
         ws.send(JSON.stringify({
@@ -28,7 +29,7 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-const options = {
+const options: https.ServerOptions = {
   key: fs.readFileSync('./key.pem'),
   cert: fs.readFileSync('./cert.pem')
 };
@@ -52,6 +53,8 @@ const server = https.createServer(options, (req, res) => {
 
   // 处理跨域
   if (req.method === "option") {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader("Access-Control-Request-Method", "*")
     res.writeHead(200);
     return res.end();
   }

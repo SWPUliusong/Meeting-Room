@@ -1,3 +1,4 @@
+import WebSocket from "ws";
 
 export type SendData = string | Buffer | Object
 
@@ -16,4 +17,8 @@ export interface MessageDataPayload {
 export interface MessageData {
   type: string
   payload: MessageDataPayload
+}
+
+export interface Services {
+  [key: string]: (message: MessageData, ws?: WebSocket) => void
 }
