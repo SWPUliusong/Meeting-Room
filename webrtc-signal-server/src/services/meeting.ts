@@ -47,18 +47,12 @@ exports.joinMeeting = ({ type, payload }: MessageData) => {
   peer.join(room).send({
     type: type + "Response",
     payload: {
-      ...State.ROOM_CREATED,
+      ...State.ROOM_JOIN,
       users: userIds
     }
   });
-  // 通知房间其他人，有人加入
-  // socket.broadcast({
-  //   type: "otherJoinMeeting",
-  //   payload: {
-  //     newcomer: sender
-  //   }
-  // })
-  socket.broadcast({
+
+  peer.broadcast({
     type: "notice",
     payload: {
       content: `${sender}加入会议`
@@ -67,19 +61,13 @@ exports.joinMeeting = ({ type, payload }: MessageData) => {
 }
 
 // 离开会议
-exports.leaveMeeting = ({ type, payload }) => {
+exports.leaveMeeting = ({ type, payload }: MessageData) => {
   let { sender } = payload
 
-  let socket = Socket.get(sender)
+  let peer = Peer.get(sender)
 
   // 通知房间其他人，自己已离开
-  // socket.broadcast({
-  //   type: "otherLeaveMeeting",
-  //   payload: {
-  //     userId: sender
-  //   }
-  // })
-  socket.broadcast({
+  peer.broadcast({
     type: "notice",
     payload: {
       content: `${sender}离开会议`
@@ -87,7 +75,7 @@ exports.leaveMeeting = ({ type, payload }) => {
   })
 
   // 离开房间
-  socket.leave().send({
+  peer.leave().send({
     type: type + "Response",
     payload: State.USER_LEAVE_MEETING
   });
