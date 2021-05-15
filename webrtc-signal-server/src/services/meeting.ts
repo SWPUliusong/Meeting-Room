@@ -4,7 +4,7 @@ import Room from "../Room"
 import { MessageData } from "../interface"
 
 // 创建会议
-exports.createMeeting = ({ type, payload }: MessageData) => {
+export function createMeeting({ type, payload }: MessageData) {
   let { sender, roomId, maxUsersCount } = payload
   if (!roomId) {
     // 没有自定义会议房间id,则生成一个随机串
@@ -31,7 +31,7 @@ exports.createMeeting = ({ type, payload }: MessageData) => {
 }
 
 // 加入会议
-exports.joinMeeting = ({ type, payload }: MessageData) => {
+export function joinMeeting({ type, payload }: MessageData) {
   let { sender, roomId } = payload
   // 房间不存在
   if (!Room.has(roomId)) {
@@ -61,7 +61,7 @@ exports.joinMeeting = ({ type, payload }: MessageData) => {
 }
 
 // 离开会议
-exports.leaveMeeting = ({ type, payload }: MessageData) => {
+export function leaveMeeting({ type, payload }: MessageData) {
   let { sender } = payload
 
   let peer = Peer.get(sender)

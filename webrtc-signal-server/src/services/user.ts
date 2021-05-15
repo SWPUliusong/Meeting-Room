@@ -4,7 +4,7 @@ import { MessageData } from "../interface"
 import WebSocket from "ws"
 
 // 注册
-exports.register = ({ type, payload }: MessageData, ws: WebSocket) => {
+export function register({ type, payload }: MessageData, ws: WebSocket) {
   // 用户已存在
   if (Peer.has(payload.sender)) {
     throw State.USER_EXIST
@@ -17,7 +17,7 @@ exports.register = ({ type, payload }: MessageData, ws: WebSocket) => {
 }
 
 // 注销
-exports.logout = ({ payload }: MessageData) => {
+export function logout({ payload }: MessageData) {
   let sender = payload.sender
   // 用户不存在
   if (!Peer.has(sender)) {

@@ -12,10 +12,10 @@ function rtcSignalHandler({ type, payload }: MessageData) {
 }
 
 // 发送offer
-exports.offer = rtcSignalHandler
+export const offer = rtcSignalHandler
 
 // 发送answer
-exports.answer = rtcSignalHandler
+export const answer = rtcSignalHandler
 
 // 发送candidate
-exports.candidate = rtcSignalHandler
+export const candidate = rtcSignalHandler
