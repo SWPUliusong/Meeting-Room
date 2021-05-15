@@ -1,6 +1,7 @@
 import https from "https"
 import fs from "fs"
 import path from "path"
+import os from "os"
 import WebSocket from "ws"
 import * as services from "./services"
 import { MessageData, Services } from "./interface"
@@ -73,6 +74,28 @@ server.on('upgrade', function upgrade(request, socket, head) {
   }
 });
 
-server.listen(3000, () => {
-  console.log('listening at 3000')
+
+///获取本机ip///
+function getIPAdress(): string[] {
+  let ips = []
+  let interfaces = os.networkInterfaces();
+  for (let devName in interfaces) {
+    let iface = interfaces[devName];
+    for (let i = 0; i < iface.length; i++) {
+      let alias = iface[i];
+      if (alias.family === 'IPv4') {
+        ips.push(alias.address)
+      }
+    }
+  }
+  return ips
+}
+
+const port = 3000
+server.listen(port, () => {
+  console.log('listening at: ')
+  let ips = getIPAdress()
+  for (let ip of ips) {
+    console.log(`\thttps://${ip}:${port}`)
+  }
 })
