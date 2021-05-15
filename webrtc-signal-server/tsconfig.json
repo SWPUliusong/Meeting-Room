@@ -9,7 +9,7 @@
     "esModuleInterop": true /* 支持CommonJS和ES模块之间的互操作性。 */,
     "removeComments": true /* 输出清除注释。 */,
     "noEmitOnError": true /* 报错时不生成输出文件 */,
-    "noImplicitAny": true, /* 不允许隐性的any */
+    "noImplicitAny": true, /* 不允许元素隐式具有 "any" 类型 */
     "isolatedModules": true /* 强制要求每一个ts文件必须是一个模块 */,
     "experimentalDecorators": true /* 实验修饰符 */,
     "emitDecoratorMetadata": true /* 给源码里的装饰器声明加上设计类型元数据 */,
