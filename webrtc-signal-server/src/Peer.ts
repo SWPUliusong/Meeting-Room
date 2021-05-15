@@ -1,18 +1,6 @@
 import Room from "./Room"
-import State from "./State"
 import WebSocket from "ws"
-
-export type SendData = string | Buffer | Object
-
-export interface PeerInstance {
-  id: string
-  roomId: string
-  ws: WebSocket
-  join(roomId: string | Room): this
-  leave(): this
-  send(data: SendData): void
-  broadcast(data: SendData): void
-}
+import { SendData } from "./interface"
 
 const Peers: Map<string, Peer> = new Map()
 
@@ -100,16 +88,14 @@ class Peer {
    * @param userId 
    */
   static get(userId: string) {
-    let peer = Peers.get(userId)
-    if (!!peer) return peer
-    throw State.USER_UNEXIST
+    return Peers.get(userId)
   }
 
   /**
    * 判断用户是否已存在
    * @param userId 
    */
-  static has(userId: string) {
+  static has(userId: string): boolean {
     return Peers.has(userId)
   }
 
@@ -124,33 +110,6 @@ class Peer {
       Peers.delete(userId)
       peer.leave()
     } catch (error) { }
-  }
-
-  /**
-   * 给所有用户广播消息
-   * @param data 
-   */
-  static broadcast(data: SendData) {
-    Peers.forEach(socket => {
-      socket.send(data)
-    })
-  }
-
-  /**
-   * 获取房间内所有用户
-   * @param roomId 
-   */
-  static getRoomUsers(room: string | Room) {
-    if (typeof room === "string") {
-      roomId = roomId.id Room.get()
-    }
-    let userIds = []
-    Peers.forEach((socket, id) => {
-      if (socket.roomId === roomId) {
-        userIds.push(id)
-      }
-    })
-    return userIds
   }
 }
 

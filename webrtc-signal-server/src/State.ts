@@ -20,4 +20,5 @@ export default {
   ROOM_UNEXIST: Message(20001, "房间不存在"),
   ROOM_FULL: Message(20002, "房间人数已达上限"),
   ROOM_CREATED: Message(20003, "房间创建成功"),
+  ROOM_JOIN: Message(20004, "加入房间成功"),
 }

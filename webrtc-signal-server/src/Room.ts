@@ -1,5 +1,5 @@
-import State from "./State"
-import Peer, { SendData } from "./Peer"
+import Peer from "./Peer"
+import { SendData } from "./interface"
 
 /**
  * 房间集合
@@ -50,12 +50,12 @@ class Room {
    * 向房间内添加人员
    * @param {Peer} peer 
    */
-  add(peer: Peer) {
+  add(peer: Peer): boolean {
     if (this.count < this.maxUsersCount) {
       this.peers.add(peer)
-    } else {
-      throw State.ROOM_FULL
+      return true
     }
+    return false
   }
 
   /**
@@ -83,10 +83,19 @@ class Room {
    * @param roomId 
    */
   static get(roomId: string): Room {
-    let room = Rooms.get(roomId)
-    if (!!room) return room
-    throw State.ROOM_UNEXIST
+    return Rooms.get(roomId)
+  }
+
+  /**
+   * 获取房间内所有用户
+   * @param room
+   */
+  static getUsers(room: string | Room): Peer[] {
+    if (typeof room === "string") {
+      room = Room.get(room)
+    }
+    return [...room.peers]
   }
 }
 
-module.exports = Room
+export default Room
