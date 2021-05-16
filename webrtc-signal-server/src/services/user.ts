@@ -25,3 +25,8 @@ export function logout({ payload }: MessageData) {
   }
   Peer.destroy(sender)
 }
+
+// 心跳
+export function ping(_: MessageData, ws: WebSocket) {
+  ws.send(JSON.stringify({ type: "pong" }))
+}
